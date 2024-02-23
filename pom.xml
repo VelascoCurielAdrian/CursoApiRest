@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.coppel</groupId>
-	<artifactId>CursoApiRest</artifactId>
+	<artifactId>CurseApiRest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>CursoApiRest</name>
 	<description>Demo project for Spring Boot</description>

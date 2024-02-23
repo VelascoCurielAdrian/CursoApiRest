@@ -31,7 +31,7 @@ public class UserService implements IUserservice {
 	@Setter
 	@Autowired
 	private UserRepository userRepository;
-	List<String> roles = Arrays.asList("ADMINISTRADOR", "DEVELOPER");
+	List<String> roles = Arrays.asList("ADMINISTRATOR", "DEVELOPER");
 
 	// SERVICE LIST PAGINATE
 	@Override
@@ -72,6 +72,10 @@ public class UserService implements IUserservice {
 			if (userUpdate.getVacationStart() != null) {
 				user.setVacationStart(userUpdate.getVacationStart());
 			}
+			
+			if(userUpdate.getEnabled() != null){
+				user.setEnabled(userUpdate.getEnabled());
+			}
 
 			if (userUpdate.getVacationEnding() != null) {
 				user.setVacationEnding(userUpdate.getVacationEnding());
@@ -102,6 +106,7 @@ public class UserService implements IUserservice {
 		newUser.setName(createUserRequest.getName());
 		newUser.setLastName(createUserRequest.getLastName());
 		newUser.setRole(createUserRequest.getRole());
+		newUser.setEnabled(true);
 
 		if (createUserRequest.getVacationStart() != null) {
 			newUser.setVacationStart(createUserRequest.getVacationStart());
@@ -112,7 +117,7 @@ public class UserService implements IUserservice {
 		}
 
 		newUser.setCreationDate(LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS));
-
+		
 		User savedUser = userRepository.save(newUser);
 		return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
 	}

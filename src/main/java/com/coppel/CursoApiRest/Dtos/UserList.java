@@ -12,7 +12,7 @@ import lombok.Setter;
 public class UserList {
 	private List<User> rows;
 	@Getter
-	private long count;
+	private int count;
 
 	// Getters y Setters
 	public List<UserResponse> getRows() {

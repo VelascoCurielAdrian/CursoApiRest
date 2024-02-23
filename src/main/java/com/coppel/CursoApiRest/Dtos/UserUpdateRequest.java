@@ -22,7 +22,7 @@ public class UserUpdateRequest {
 	private String lastName;
 	private LocalDateTime vacationStart;
 	private LocalDateTime vacationEnding;
-
+	private Boolean enabled;
 //	@Pattern(regexp = "(DEVELOPER|ADMINISTRATOR)$")
 	private String role;
 }

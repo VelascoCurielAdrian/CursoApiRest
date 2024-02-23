@@ -29,51 +29,51 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-	@Autowired
-	private final UserService userService;
-
-	List<String> roles;
-
-	public UserController(UserService userService) {
-		this.userService = userService;
-		roles = Arrays.asList("ADMINISTRADOR", "DEVELOPER");
-	}
-
-	// RUTA PARA LISTADO CON PAGINACIÓN
-	@GetMapping("/listado")
-	public ResponseEntity<Object> getUsersResponse(@RequestParam(required = false, defaultValue = "0") int page,
-	                                               @RequestParam(required = false, defaultValue = "20") int size,
-	                                               @RequestParam(required = false, defaultValue = "creationDate,desc") String[] sort) {
-
-		// sort[0] - ATTRIBUTES ORDER
-		// sort[1] - ORDER DESC, ORDER ASC,
-
-		Page<User> userPage = userService.getUsers(page, size, sort);
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Total-elements", String.valueOf(userPage.getTotalElements()));
-
-		UserList response = new UserList();
-		response.setRows(userPage.getContent());
-		response.setCount(userPage.getTotalElements());
-
-		return ResponseEntity.ok().headers(headers).body(response);
-	}
-
-	// RUTA PARA OBTENER UN USUARIO POR ID
-	@GetMapping("/{id}")
-	public Optional<User> getUserById(@PathVariable UUID id) {
-		return userService.getUserById(id);
-	}
-
-	// RUTA PARA ACTUALIZAR UN USUARIO
-	@PutMapping("/{id}")
-	public ResponseEntity<User> putUser(@PathVariable UUID id, @Valid @RequestBody UserUpdateRequest userUpdate) {
-		return userService.putUser(id, userUpdate);
-	}
-
-	// RUTA PARA CREAR UN USUARIO
-	@PostMapping
-	public ResponseEntity<User> createUser(@Valid @RequestBody UserCreatedRequest createUserRequest) {
-		return userService.createUser(createUserRequest);
-	}
+  @Autowired
+  private final UserService userService;
+  
+  List<String> roles;
+  
+  public UserController(UserService userService) {
+    this.userService = userService;
+    roles = Arrays.asList("ADMINISTRATOR", "DEVELOPER");
+  }
+  
+  // RUTE PAGINATE LIST
+  @GetMapping("/list")
+  public ResponseEntity<Object> getUsersResponse(@RequestParam(required = false, defaultValue = "0") int page,
+                                                 @RequestParam(required = false, defaultValue = "20") int size,
+                                                 @RequestParam(required = false, defaultValue = "creationDate,desc") String[] sort) {
+    
+    // sort[0] - ATTRIBUTES ORDER
+    // sort[1] - ORDER DESC, ORDER ASC,
+    
+    Page<User> userPage = userService.getUsers(page, size, sort);
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("Total-elements", String.valueOf(userPage.getTotalElements()));
+    
+    UserList response = new UserList();
+    response.setRows(userPage.getContent());
+    response.setCount((int) userPage.getTotalElements());
+    
+    return ResponseEntity.ok().headers(headers).body(response.getRows());
+  }
+  
+  // PATH TO GET USER ON ID
+  @GetMapping("/{id}")
+  public Optional<User> getUserById(@PathVariable UUID id) {
+    return userService.getUserById(id);
+  }
+  
+  // PATH TO UPDATE USER ON ID
+  @PutMapping("/{id}")
+  public ResponseEntity<User> putUser(@PathVariable UUID id, @Valid @RequestBody UserUpdateRequest userUpdate) {
+    return userService.putUser(id, userUpdate);
+  }
+  
+  // PATH TO CREATED USER
+  @PostMapping
+  public ResponseEntity<User> createUser(@Valid @RequestBody UserCreatedRequest createUserRequest) {
+    return userService.createUser(createUserRequest);
+  }
 }
